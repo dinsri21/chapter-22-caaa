@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#F5EFE6" />
+  <title>Loading Chapter 22... ✨</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500&family=Poppins:wght@300;400;500;600&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+
+  <div id="particles" aria-hidden="true"></div>
+  <canvas id="confettiCanvas" aria-hidden="true"></canvas>
+  <button class="audio-toggle" id="audioToggle" type="button" aria-label="Matikan suara" aria-pressed="false">
+    <span aria-hidden="true">🔊</span>
+  </button>
+
+  <!-- NAV SCROLL PROGRESS -->
+  <nav class="nav" role="navigation">
+    <div class="nav-inner">
+      <span class="nav-brand">📖 Chapter 22</span>
+      <div class="nav-track" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+        <div class="nav-fill" id="scrollFill"></div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ===== 1. HERO — tap to charge ===== -->
+  <section class="hero" id="hero">
+    <div class="hero-deco" aria-hidden="true">
+      <span class="hdeco hdeco--tl">🌿</span>
+      <span class="hdeco hdeco--tr">🌱</span>
+      <span class="hdeco hdeco--bl">🍃</span>
+      <span class="hdeco hdeco--br">🌾</span>
+    </div>
+    <div class="hero-body">
+      <p class="hero-eyebrow">Halooo Alshaaa👋</p>
+      <h1 class="hero-title">Loading<br><em>Chapter 22</em><span class="blink">...</span></h1>
+
+      <!-- TAP TO CHARGE -->
+      <div class="charge-area" id="chargeArea" role="button" tabindex="0" aria-label="Tap untuk mengisi energy">
+        <div class="charge-ring" id="chargeRing">
+          <div class="charge-fill-wrap">
+            <svg class="charge-svg" viewBox="0 0 120 120">
+              <circle class="charge-bg-circle" cx="60" cy="60" r="50" />
+              <circle class="charge-progress-circle" id="chargeCircle" cx="60" cy="60" r="50" stroke-dasharray="314"
+                stroke-dashoffset="314" />
+            </svg>
+            <div class="charge-inner">
+              <span class="charge-emoji" id="chargeEmoji">🌱</span>
+              <span class="charge-pct" id="chargePct">0%</span>
+              <span class="charge-hint" id="chargeHint">tap!</span>
+            </div>
+          </div>
+        </div>
+        <p class="charge-label">tap terus ✨</p>
+      </div>
+
+      <div class="hero-check" id="heroCheck" aria-live="polite">
+        <span class="check-icon">✓</span> Chapter 21 Completed — Let's go!
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 2. CHAPTER 21 — flip card ===== -->
+  <section class="chapter ch21" id="chapter21">
+    <div class="chapter-inner">
+      <div class="section-label">chapter 21</div>
+      <h2 class="section-title">Throwback dulu ya<br>Shaaa</h2>
+
+      <p class="section-hint reveal-up">tap kartu 👆</p>
+
+      <div class="flip-card reveal-up" id="flipCard" role="button" tabindex="0" aria-label="Tap untuk balik kartu">
+        <div class="flip-inner">
+          <!-- FRONT -->
+          <div class="flip-front">
+            <div class="photo-frame">
+              <img src="assets/graduation-photo.jpg" alt="Foto wisuda" class="photo-img" id="graduationPhoto"
+                loading="lazy" />
+              <div class="photo-badge">🎓</div>
+              <div class="photo-corner photo-corner--tl"></div>
+              <div class="photo-corner photo-corner--tr"></div>
+              <div class="photo-corner photo-corner--bl"></div>
+              <div class="photo-corner photo-corner--br"></div>
+            </div>
+            <div class="flip-cta">baca pesannya →</div>
+          </div>
+          <!-- BACK -->
+          <div class="flip-back">
+            <div class="flip-back-content">
+              <p class="flip-emoji">🎓✨</p>
+              <p>oii Keren banget sha, akhirnya ya Chapter 21 selesai juga wkwkwk</p>
+              <p>Katanya umur 21 itu umur yang penuh perubahan, katanya yaaa hahaha. Banyak hal yang datang dan pergi, tapi mane keren banget bisa berhasil ngelewatin semuanya sampai di titik ini.</p>
+              <p><strong>Congrats on your graduation! 🎓</strong></p>
+              <p>One of the biggest achievements in this chapter.</p>
+              <p>Welcome to Chapter 22. 🤍</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+
+  <!-- ===== 4. MEMORY BOX ===== -->
+  <section class="chapter ch-memory-box" id="memoryBox">
+    <div class="chapter-inner">
+      <div class="section-label reveal-up">kenangan</div>
+      <h2 class="section-title reveal-up">Open Memory Box</h2>
+      <p class="section-hint reveal-up">semua momen yang pernah kita lewati 🤍</p>
+
+      <!-- Trigger button -->
+      <div class="mb-trigger reveal-up" id="mbTrigger">
+        <button class="mb-open-btn" id="mbOpenBtn" aria-label="Buka memory box">
+          <span class="mb-box-icon">📦</span>
+          <span class="mb-btn-text">Open Memory Box</span>
+        </button>
+        <p class="mb-hint-text">klik untuk membuka</p>
+      </div>
+
+      <!-- Polaroid scatter area -->
+      <div class="mb-scatter" id="mbScatter" aria-live="polite" hidden>
+
+        <div class="polaroid-card" data-i="0" style="--rot:-5deg;--delay:0.1s">
+          <div class="polaroid-img-wrap">
+            <img src="assets/memory-1.jpg" alt="Kenangan 1" class="polaroid-img" loading="lazy" />
+          </div>
+          <p class="polaroid-caption-text">💕</p>
+        </div>
+
+        <div class="polaroid-card" data-i="1" style="--rot:3deg;--delay:0.3s">
+          <div class="polaroid-img-wrap">
+            <img src="assets/memory-2.jpg" alt="Kenangan 2" class="polaroid-img" loading="lazy" />
+          </div>
+          <p class="polaroid-caption-text">✨</p>
+        </div>
+
+        <div class="polaroid-card" data-i="2" style="--rot:-7deg;--delay:0.5s">
+          <div class="polaroid-img-wrap">
+            <img src="assets/memory-3.jpg" alt="Kenangan 3" class="polaroid-img" loading="lazy" />
+          </div>
+          <p class="polaroid-caption-text">🌸</p>
+        </div>
+
+        <div class="polaroid-card" data-i="3" style="--rot:5deg;--delay:0.7s">
+          <div class="polaroid-img-wrap">
+            <img src="assets/memory-4.jpg" alt="Kenangan 4" class="polaroid-img" loading="lazy" />
+          </div>
+          <p class="polaroid-caption-text">🌿</p>
+        </div>
+
+        <div class="polaroid-card" data-i="4" style="--rot:-3deg;--delay:0.9s">
+          <div class="polaroid-img-wrap">
+            <img src="assets/memory-5.jpg" alt="Kenangan 5" class="polaroid-img" loading="lazy" />
+          </div>
+          <p class="polaroid-caption-text">💛</p>
+        </div>
+
+        <div class="polaroid-card" data-i="5" style="--rot:6deg;--delay:1.1s">
+          <div class="polaroid-img-wrap">
+            <img src="assets/memory-6.jpg" alt="Kenangan 6" class="polaroid-img" loading="lazy" />
+          </div>
+          <p class="polaroid-caption-text">🍃</p>
+        </div>
+
+        <div class="polaroid-card" data-i="6" style="--rot:-4deg;--delay:1.3s">
+          <div class="polaroid-img-wrap">
+            <img src="assets/memory-7.jpg" alt="Kenangan 7" class="polaroid-img" loading="lazy" />
+          </div>
+          <p class="polaroid-caption-text">🌙</p>
+        </div>
+
+        <div class="polaroid-card" data-i="7" style="--rot:8deg;--delay:1.5s">
+          <div class="polaroid-img-wrap">
+            <img src="assets/memory-8.jpg" alt="Kenangan 8" class="polaroid-img" loading="lazy" />
+          </div>
+          <p class="polaroid-caption-text">🖼️</p>
+        </div>
+
+        <div class="polaroid-card" data-i="8" style="--rot:-2deg;--delay:1.7s">
+          <div class="polaroid-img-wrap">
+            <img src="assets/memory-9.jpg" alt="Kenangan 9" class="polaroid-img" loading="lazy" />
+          </div>
+          <p class="polaroid-caption-text">🤍</p>
+        </div>
+
+      </div>
+      <p class="mb-stack-counter" id="mbStackCounter" hidden></p>
+
+      <!-- Closing message & CTA — shown after all photos appear -->
+      <div class="mb-closing" id="mbClosing" hidden>
+        <p class="mb-closing-text">
+          "And maybe there are still many memories<br>that don't fit inside this box."
+        </p>
+        <a href="#letter" class="mb-letter-btn" id="mbLetterBtn">
+          💌 Read The Letter
+        </a>
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- ===== 6. LETTER — typewriter reveal ===== -->
+  <section class="chapter ch-letter" id="letter">
+    <div class="chapter-inner">
+      <div class="section-label">One More Thing</div>
+      <h2 class="section-title">Chapter 22:<br>What's Next?</h2>
+      <p class="section-hint reveal-up">scroll pelan-pelan 👇</p>
+
+      <div class="letter reveal-up" role="article">
+        <div class="letter-header">
+          <span>📝</span>
+          <time>27 Juni 2026</time>
+        </div>
+        <p class="letter-salutation typewriter-trigger" data-typed="Haii, selamat ulang tahun dan selamat gelar S.Ak shaaa —"></p>
+
+        <div class="letter-paragraphs">
+          <p class="letter-para hidden-para" data-delay="0">
+            Ayo buat hari ini kerasa lebih spesial ya. karena bukan cuman perihal bertambah usia, tapi juga karna akhirnya mane berhasil sampe di salah satu pencapaian besar yang udah lama mane perjuangkan.
+          </p>
+          <p class="letter-para hidden-para" data-delay="1">
+            Mungkin setelah semua euforia wisuda ini selesai, akan muncul banyak pertanyaan tentang langkah berikutnya. Tentang rencana yang belum sepenuhnya jelas, atau tentang "habis ini mau ke mana?", "habis ini mau ngapain?", "apa ga sia sia urng kuliah?". Hahahahhahahaha gapapa tapi itu wajar, maklum fresh graduate.
+          </p>
+          <p class="letter-para hidden-para" data-delay="2">
+            Yang penting nih yaa,  jangan lupa kalau gelar yang mane dapetin sekarang adalah bukti dari semua usaha, waktu, dan perjuangan yang udah mane lewati. Mane pernah ada di titik bingung, pernah ngerasa capek, tapi tetep berhasil buat ngelewatin semua itu.
+          </p>
+          <p class="letter-para hidden-para" data-delay="3">
+            Jadi santai aja dulu. Ngga semuanya harus langsung ketemu jawabannya hari ini, minggu ini, atau bahkan bulan ini. Yang penting, jangan lupa buat bangga sama diri sendiri. Soalnya ngga semua orang bisa sampai di titik yang sekarang mane capai.
+          </p>
+          <p class="letter-sign hidden-para" data-delay="4">
+            Hari ini, nikmatin aja dulu semua momen yang ada. Rayain ulang tahunnya, rayain gelar barunya, dan rayain semua perjuangan yang akhirnya berhasil mane lewatin. Semoga di umur 22 ini banyak hal baik yang datang, banyak kesempatan yang terbuka, dan banyak versi terbaik dari diri mane yang pelan-pelan muncul.
+          </p>
+        </div>
+
+        <div class="letter-footer">
+          <span>Happy birthday and congrats, S.Ak! 🎉🎓</span>
+          <span class="letter-from">Welcome to Chapter 22 ✨ 💝</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 7. FINAL — tap star burst ===== -->
+  <section class="chapter ch-final" id="final">
+    <div class="chapter-inner ch-final-inner">
+      <div class="final-deco">✨</div>
+      <div class="section-label">last page</div>
+      <h2 class="section-title reveal-up">Chapter 22<br><em>The Next Chapter</em></h2>
+      <p class="final-sub reveal-up">Enjoy the ride, Shaa.</p>
+
+      <!-- STAR BURST BUTTON -->
+      <div class="star-btn-wrap reveal-up">
+        <button class="star-btn" id="btnStart" aria-label="Mulai chapter baru">
+          <span class="star-btn-text">✨ Turn The Page ✨</span>
+          <div class="star-burst" id="starBurst" aria-hidden="true"></div>
+        </button>
+      </div>
+
+      <!-- CELEBRATION -->
+      <div id="celebOverlay" class="celeb-overlay" role="dialog" aria-modal="true" hidden>
+        <div class="celeb-card">
+          <button class="celeb-close" id="btnClose" aria-label="Tutup">&times;</button>
+          <div class="celeb-emoji">🎓</div>
+          <h3 class="celeb-title">Officially S.Ak</h3>
+          <p class="celeb-sub">🎂 Chapter 22 Unlocked</p>
+          <p class="celeb-bd">Happy Birthday.</p>
+          <p class="celeb-quote">"The best chapters are often the ones<br>we haven't read yet."</p>
+          <div class="celeb-divider"></div>
+          <p class="celeb-msg">22 looks good on you, Shaa. Semoga tahun ini membawa banyak tawa, cerita seru, dan alasan baru untuk bersyukur.<br>Enjoy your day. ✨</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <p class="footer-emoji">📖</p>
+    <p class="footer-title">Loading Chapter 22...</p>
+    <p class="footer-quote">"The best chapters are often the ones we haven't read yet."</p>
+    <p class="footer-credit">Made with 🤍 for you</p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+
+</html>
