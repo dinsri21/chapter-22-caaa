@@ -33,7 +33,7 @@ const AudioController = (() => {
       const startedAt = performance.now();
       fadeTimer = setInterval(() => {
         const progress = Math.min((performance.now() - startedAt) / 2000, 1);
-        music.volume = muted ? 0 : .35 * progress;
+        music.volume = muted ? 0 : .65 * progress;
         if (progress === 1) { clearInterval(fadeTimer); fadeTimer = null; }
       }, 50);
     }).catch(() => { started = false; });
@@ -42,7 +42,7 @@ const AudioController = (() => {
   function play(name) {
     if (muted || !effects[name]) return;
     const effect = new Audio(effects[name]);
-    effect.volume = .7;
+    effect.volume = .85;
     effect.play().catch(() => {});
   }
 
@@ -57,6 +57,9 @@ const AudioController = (() => {
     document.addEventListener(name, start, { once: true, passive: true });
   });
   updateToggle();
+  // Try immediately; if the browser blocks autoplay, the first interaction
+  // listeners above will start it automatically.
+  start();
   return { play };
 })();
 
@@ -517,6 +520,15 @@ if (flipCard) {
   if (letterBtn) {
     letterBtn.addEventListener('click', () => {
       letterUnlocked = true;
+      setTimeout(() => {
+        if (letterStarted) return;
+        letterStarted = true;
+        const text = salutation.dataset.typed || 'Hei, kamu yang luar biasa —';
+        typeWriter(salutation, text, () => {
+          setTimeout(revealParas, 300);
+        });
+        letterObs.unobserve(salutation);
+      }, 450);
     });
   }
 })();
