@@ -319,6 +319,14 @@ section { position: relative; z-index: 1; padding: var(--section-pad); }
 }
 .mb-open-btn:hover { transform: translateY(-3px); box-shadow: var(--shadow-lg); }
 .mb-open-btn:active { transform: scale(.97); }
+.mb-open-btn:disabled { cursor: wait; opacity: .85; }
+.mb-open-btn.is-loading .mb-box-icon {
+  animation: memoryBoxLoading .9s ease-in-out infinite alternate;
+}
+@keyframes memoryBoxLoading {
+  from { transform: translateY(0) rotate(-4deg); }
+  to { transform: translateY(-4px) rotate(4deg); }
+}
 .mb-box-icon { font-size: 1.4rem; transition: transform .4s ease; }
 .mb-open-btn:hover .mb-box-icon { transform: rotate(-8deg) scale(1.1); }
 .mb-hint-text { font-size: .78rem; color: var(--text-light); letter-spacing: .02em; }
@@ -613,6 +621,53 @@ section { position: relative; z-index: 1; padding: var(--section-pad); }
 .celeb-quote { font-size:clamp(.85rem,2.3vw,.95rem); font-style:italic; color:var(--text-muted); line-height:1.7; margin-bottom:1.5rem; }
 .celeb-divider { width:60px; height:2px; background:var(--gold); margin:0 auto 1.25rem; border-radius:99px; }
 .celeb-msg { font-size:clamp(.88rem,2.3vw,.98rem); color:var(--text); line-height:1.8; }
+
+@media (max-width: 520px) {
+  .celeb-overlay {
+    align-items: flex-end;
+    padding:
+      max(.75rem, env(safe-area-inset-top))
+      .75rem
+      max(.75rem, env(safe-area-inset-bottom));
+  }
+
+  .celeb-card {
+    width: 100%;
+    max-height: calc(100dvh - 1.5rem - env(safe-area-inset-top) - env(safe-area-inset-bottom));
+    padding: 1.5rem 1.15rem 1.35rem;
+    border-radius: 24px;
+    overscroll-behavior: contain;
+    scrollbar-width: thin;
+  }
+
+  .celeb-close {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    margin: -.5rem -.25rem -.25rem auto;
+    width: 38px;
+    height: 38px;
+    background: rgba(228,213,193,.9);
+  }
+
+  .celeb-emoji { font-size: 2.65rem; margin-bottom: .35rem; }
+  .celeb-title { font-size: 1.75rem; line-height: 1.15; margin-bottom: .35rem; }
+  .celeb-sub { font-size: .95rem; margin-bottom: .65rem; }
+  .celeb-bd { font-size: 2rem; line-height: 1.15; margin-bottom: .8rem; }
+  .celeb-quote { font-size: .82rem; line-height: 1.55; margin-bottom: .9rem; }
+  .celeb-quote br { display: none; }
+  .celeb-divider { margin-bottom: .85rem; }
+  .celeb-msg { font-size: .84rem; line-height: 1.65; }
+}
+
+@media (max-height: 620px) and (max-width: 520px) {
+  .celeb-card { padding-top: .9rem; padding-bottom: 1rem; }
+  .celeb-close { margin-top: -.35rem; }
+  .celeb-emoji { display: none; }
+  .celeb-bd { font-size: 1.7rem; margin-bottom: .55rem; }
+  .celeb-quote { margin-bottom: .65rem; }
+  .celeb-divider { margin-bottom: .65rem; }
+}
 
 /* CONFETTI */
 #confettiCanvas { position:fixed; inset:0; z-index:9998; pointer-events:none; width:100%; height:100%; }

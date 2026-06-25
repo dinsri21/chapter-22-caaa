@@ -278,13 +278,50 @@ if (flipCard) {
   if (!openBtn || !scatter) return;
 
   const cards = qsa('.polaroid-card', scatter);
+  const images = qsa('.polaroid-img', scatter);
   const total = cards.length;
   let topIdx = total - 1; // top of stack = last card (rendered on top)
   let opened = false;
+  let opening = false;
   let swiping = false;
 
+  // Start loading before the hidden memory box is opened. Native lazy-loading
+  // otherwise waits because the images live inside a hidden container.
+  const preloadPhotos = (() => {
+    let promise;
+    return () => {
+      if (promise) return promise;
+      promise = Promise.all(images.map(img => new Promise(resolve => {
+        if (img.complete && img.naturalWidth) {
+          img.decode?.().catch(() => {}).finally(resolve);
+          return;
+        }
+        const preload = new Image();
+        preload.onload = () => {
+          img.src = preload.src;
+          img.decode?.().catch(() => {}).finally(resolve);
+        };
+        preload.onerror = resolve;
+        preload.src = img.currentSrc || img.src;
+      })));
+      return promise;
+    };
+  })();
+
+  const memorySection = qs('#memoryBox');
+  if (memorySection && 'IntersectionObserver' in window) {
+    const preloadObserver = new IntersectionObserver(entries => {
+      if (!entries.some(entry => entry.isIntersecting)) return;
+      preloadPhotos();
+      preloadObserver.disconnect();
+    }, { rootMargin: '600px 0px' });
+    preloadObserver.observe(memorySection);
+  } else {
+    preloadPhotos();
+  }
+
   // Image fallback
-  qsa('.polaroid-img', scatter).forEach(img => {
+  images.forEach(img => {
     img.addEventListener('error', function () {
       const wrap = this.closest('.polaroid-img-wrap');
       if (!wrap) return;
@@ -334,8 +371,20 @@ if (flipCard) {
     }
   }
 
-  function openBox() {
-    if (opened) return;
+  async function openBox() {
+    if (opened || opening) return;
+    opening = true;
+    openBtn.disabled = true;
+    openBtn.classList.add('is-loading');
+    const buttonText = qs('.mb-btn-text', openBtn);
+    const originalText = buttonText?.textContent;
+    if (buttonText) buttonText.textContent = 'Preparing memories...';
+
+    await preloadPhotos();
+
+    openBtn.classList.remove('is-loading');
+    openBtn.disabled = false;
+    if (buttonText && originalText) buttonText.textContent = originalText;
     AudioController.play('memory');
     trigger.style.transition = 'opacity .35s ease';
     trigger.style.opacity = '0';
@@ -356,6 +405,7 @@ if (flipCard) {
     });
 
     opened = true;
+    opening = false;
     applyStackDepth();
   }
 
@@ -421,10 +471,12 @@ if (flipCard) {
    ============================================================ */
 (function letterReveal() {
   const salutation = qs('.letter-salutation');
+  const letterBtn = qs('#mbLetterBtn');
   const paras = qsa('.hidden-para');
   if (!salutation) return;
 
   let letterStarted = false;
+  let letterUnlocked = false;
 
   function typeWriter(el, text, cb) {
     let i = 0;
@@ -449,7 +501,7 @@ if (flipCard) {
   }
 
   const letterObs = new IntersectionObserver(entries => {
-    if (entries[0].isIntersecting && !letterStarted) {
+    if (entries[0].isIntersecting && letterUnlocked && !letterStarted) {
       letterStarted = true;
       const text = salutation.dataset.typed || 'Hei, kamu yang luar biasa —';
       setTimeout(() => {
@@ -461,6 +513,12 @@ if (flipCard) {
     }
   }, { threshold: 0.3 });
   letterObs.observe(salutation);
+
+  if (letterBtn) {
+    letterBtn.addEventListener('click', () => {
+      letterUnlocked = true;
+    });
+  }
 })();
 
 /* ============================================================
@@ -472,6 +530,10 @@ if (flipCard) {
   const celebOverlay = qs('#celebOverlay');
   const btnClose    = qs('#btnClose');
   if (!btnStart) return;
+
+  // Keep the fixed dialog outside the section's stacking context so it
+  // always covers later elements such as the footer.
+  document.body.appendChild(celebOverlay);
 
   const STARS = ['⭐','🌟','✨','🎉','🎊','🌿','🌸','💛','🍃'];
 
