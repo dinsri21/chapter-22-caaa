@@ -8,6 +8,8 @@ const AudioController = (() => {
   const toggle = qs('#audioToggle');
   const icon = toggle?.querySelector('span');
   const music = new Audio('https://esigsoksitnqxadcnbss.supabase.co/storage/v1/object/public/assets/background-music.wav');
+  const MUSIC_VOLUME = 5;
+  const EFFECT_VOLUME = 0.5;
   const effects = {
     flip: 'assets/card-flip.wav',
     memory: 'assets/memory-box.wav',
@@ -33,7 +35,7 @@ const AudioController = (() => {
       const startedAt = performance.now();
       fadeTimer = setInterval(() => {
         const progress = Math.min((performance.now() - startedAt) / 2000, 1);
-        music.volume = muted ? 0 : .65 * progress;
+        music.volume = muted ? 0 : MUSIC_VOLUME * progress;
         if (progress === 1) { clearInterval(fadeTimer); fadeTimer = null; }
       }, 50);
     }).catch(() => { started = false; });
@@ -42,7 +44,7 @@ const AudioController = (() => {
   function play(name) {
     if (muted || !effects[name]) return;
     const effect = new Audio(effects[name]);
-    effect.volume = .85;
+    effect.volume = EFFECT_VOLUME;
     effect.play().catch(() => {});
   }
 
@@ -60,7 +62,7 @@ const AudioController = (() => {
   // Try immediately; if the browser blocks autoplay, the first interaction
   // listeners above will start it automatically.
   start();
-  return { play };
+  return { start, play };
 })();
 
 /* ============================================================
@@ -190,6 +192,7 @@ qsa('img.photo-img').forEach(img => {
 
   function tap() {
     if (done) return;
+    AudioController.start();
     const boost = rand(6, 14);
     progress = Math.min(progress + boost, 100);
 
